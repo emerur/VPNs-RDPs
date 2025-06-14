@@ -4,6 +4,7 @@ import { Telegraf } from "telegraf";
 // Env variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const SECRET_HASH = "32e58fbahey833349df3383dee9132e180";
+//ds
 
 const bot = new Telegraf(BOT_TOKEN);
 
