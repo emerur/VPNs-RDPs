@@ -22,8 +22,9 @@ Please choose an option below to get started:
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "🛒 View Proxy Plans", callback_data: "view_plans" }],
         [{ text: "📖 How It Works", callback_data: "how_it_works" }],
+        [{ text: "🛒 View Proxy Plans", callback_data: "view_plans" }],
+        [{ text: "🎁 Get Free Proxies", callback_data: "get_free" }],
         [{ text: "📞 Contact Support", callback_data: "contact_support" }],
       ],
     },
@@ -67,6 +68,26 @@ Setup instructions are sent immediately after signup.`,
   );
 });
 
+// Get Free Proxies (Dummy Sample)
+bot.action("get_free", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `🎁 *Your Free SOCKS5 Proxy:*
+
+\`\`\`
+Host: 149.56.23.129
+Port: 1080
+Username: free_trial
+Password: tryitnow
+\`\`\`
+
+⚠️ Free proxies are limited and may be slower.
+
+Upgrade for higher speed, privacy, and region control — tap *View Plans* to explore options.`,
+    { parse_mode: "Markdown" }
+  );
+});
+
 // Contact support
 bot.action("contact_support", async (ctx) => {
   await ctx.answerCbQuery();
@@ -74,7 +95,7 @@ bot.action("contact_support", async (ctx) => {
     `📞 *Need Help?*
 
 You can contact our support team directly at:  
-👉 @trever_v9`
+👉 @trevor_v9`
   );
 });
 
