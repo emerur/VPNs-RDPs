@@ -1,86 +1,101 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
 
-// Environment variables
-const BOT_TOKEN = process.env.BOT_TOKEN; // Replace with your bot token
-const SECRET_HASH = "32e58fbahey833349df338gjhdvc910e180"; // Replace with your own secret hash
+// Env variables
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const SECRET_HASH = "32e58fbahey833349df3383dee9132e180";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
-
-// get webhook information
-// GET https://api.telegram.org/bot{my_bot_token}/getWebhookInfo
-
-//api.telegram.org/bot{token}/setWebhook?url={url}/api/telegram-hook?secret_hash={secret_hash}
-
-// Initialize the bot
 const bot = new Telegraf(BOT_TOKEN);
 
-// Handle the /start command
-export async function handleStartCommand(ctx) {
-  const COMMAND = "/start";
-  const channelUrl = "t.me/freevpnsdaily";
-
-  // Welcome message with Markdown formatting
+// /start handler
+bot.start(async (ctx) => {
   const reply = `
-  🔥 Supercharge Your VPN Power — 100% FREE! 🔥
-Say goodbye to limits. Get instant access to RDPs & VPNS — no trials, no payments, just pure performance.
+👋 *Welcome to Turbo Socks Bot!*
 
-🌍 30M+ Verified Clean IPs — zero fraud, zero hassle
-📍 Pinpoint Geo-Targeting — rule any region, anytime
-⚡ Blazing 4G Speeds — fast, stable, unstoppable
-🖥️ RDPs Launching Soon — your next-level toolkit is coming
+Protect your browsing and stay private with premium SOCKS5 proxies.
 
-🚀 Don’t wait. Join the channel now:
-🔗 [Tap to Join RDPs & VPNS](${channelUrl})
+Please choose an option below to get started:
 `;
 
-  try {
-    await ctx.reply(reply, {
-      parse_mode: "Markdown",
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: "🚀 Join RDPs & VPNS Channel Now!",
-              url: channelUrl,
-            },
-          ],
-        ],
-      },
-    });
-    console.log(`Reply to ${COMMAND} command sent successfully.`);
-  } catch (error) {
-    console.error(`Something went wrong with the ${COMMAND} command:`, error);
-  }
-}
-
-// Register the /start command handler
-bot.command("start", async (ctx) => {
-  await handleStartCommand(ctx);
+  await ctx.reply(reply, {
+    parse_mode: "Markdown",
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "🛒 View Proxy Plans", callback_data: "view_plans" }],
+        [{ text: "📖 How It Works", callback_data: "how_it_works" }],
+        [{ text: "📞 Contact Support", callback_data: "contact_support" }],
+      ],
+    },
+  });
 });
 
-// API route handler
+// View plans
+bot.action("view_plans", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `💼 *Proxy Plans Available*:
+
+🔹 *Basic Plan* — \$5/month  
+   5 proxies · 1 country
+
+🔹 *Pro Plan* — \$10/month  
+   15 proxies · Multi-region
+
+🔹 *Elite Plan* — \$20/month  
+   50 proxies · Global rotation
+
+All plans come with setup guides and 24/7 support.
+`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// How it works
+bot.action("how_it_works", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `🔧 *How It Works*:
+
+1. Choose a plan
+2. Get your SOCKS5 proxy credentials
+3. Configure them in your apps, browser, or device
+4. Browse securely and without restrictions
+
+Setup instructions are sent immediately after signup.`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// Contact support
+bot.action("contact_support", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `📞 *Need Help?*
+
+You can contact our support team directly at:  
+👉 @trever_v9`
+  );
+});
+
+// Webhook handler
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
     const { body, query } = req;
 
-    // Set webhook if requested
+    // Webhook setup
     if (query.setWebhook === "true") {
-      const webhookUrl = `${baseUrl}/api/telegram-hook?secret_hash=${SECRET_HASH}`;
+      const webhookUrl = `${process.env.VERCEL_URL}/api/telegram-hook?secret_hash=${SECRET_HASH}`;
       const isSet = await bot.telegram.setWebhook(webhookUrl);
-      console.log(`Set webhook to ${webhookUrl}: ${isSet}`);
+      console.log(`Webhook set to ${webhookUrl}: ${isSet}`);
     }
 
-    // Handle incoming updates from Telegram
-    if (query.secret_hash == SECRET_HASH) {
+    // Process updates
+    if (query.secret_hash === SECRET_HASH) {
       await bot.handleUpdate(body);
     }
   } catch (error) {
-    console.error("Error handling Telegram update:", error.toString());
+    console.error("Telegram Bot Error:", error.toString());
   }
 
-  // Acknowledge the request with Telegram
   res.status(200).send("OK");
 };
