@@ -95,7 +95,7 @@ bot.action("contact_support", async (ctx) => {
     `📞 *Need Help?*
 
 You can contact our support team directly at:  
-👉 @trevor_v9`
+👉 @TrevorDev`
   );
 });
 
