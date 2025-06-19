@@ -9,73 +9,94 @@ const SECRET_HASH = "32e58fbahey833349df3383dee9132e180";
 const bot = new Telegraf(BOT_TOKEN);
 
 // /start handler
-export async function handleStartCommand(ctx) {
-  const COMMAND = "/start";
-  const channelUrl = "t.me/hq_proxies";
-  const targetUrl = "t.me/+mu8JZaGlWG80YWFk";
-
-  // Welcome message with Markdown formatting
+bot.start(async (ctx) => {
   const reply = `
-  🚀 FREE MONEY-MAKING METHODS + UNLIMITED PROXIES! 🚀
+👋 *Welcome to Turbo Socks Bot!*
 
-💸 Want to start making real money online?
-We reveal step-by-step methods anyone can use — no tricks, no paywalls, just 100% free legit strategies to help you earn from your phone or PC.
-✅ Bank Log Cashout & CC Updates Daily
-✅ Free Walkthroughs & Giveaways
-✅ Free Proxies & Tools
-✅ No skills needed
-✅ Results from day one (if you’re serious)
+Protect your browsing and stay private with premium SOCKS5 proxies.
 
-🛡 And to keep you anonymous while you earn:
-✔️ 30M+ Residential Socks5 IPs
-✔️ 1M+ Mobile 4G/LTE Proxies
-✔️ 0 Fraud Score – Fully Undetectable
-✔️ Sticky & Rotating Sessions
-✔️ Worldwide Targeting
-
-🎯 Start earning smarter, not harder.
-⚡️ Everything is FREE – No signups, no trials.
-
-👇 Tap a button to unlock everything:
-🔗 [Tap to Join Now](${targetUrl})
+Please choose an option below to get started:
 `;
 
-  try {
-    await ctx.reply(reply, {
-      parse_mode: "Markdown",
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: "🔗 Join Channel", url: channelUrl }],
-          [
-            {
-              text: "🌐 Get Free Proxies",
-              url: channelUrl,
-            },
-          ],
-          [{ text: "🎓 Learn to Earn", url: targetUrl }],
-        ],
-      },
-    });
-    console.log(`Reply to ${COMMAND} command sent successfully.`);
-  } catch (error) {
-    console.error(`Something went wrong with the ${COMMAND} command:`, error);
-  }
-}
-export async function sendImageCommand(ctx) {
-  // Send image first
-  await ctx.replyWithPhoto(
-    {
-      url: "https://drive.google.com/file/d/1oCzGfdSY_27PKnP7_-OSTRAoZUBA60_0/view",
-    }, // or use { source: 'path/to/image.jpg' }
-    { caption: "🔥 FREE MONEY-MAKING METHODS🔥" }
-  );
-}
+  await ctx.reply(reply, {
+    parse_mode: "Markdown",
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "📖 How It Works", callback_data: "how_it_works" }],
+        [{ text: "🛒 View Proxy Plans", callback_data: "view_plans" }],
+        [{ text: "🎁 Get Free Proxies", callback_data: "get_free" }],
+        [{ text: "📞 Contact Support", callback_data: "contact_support" }],
+      ],
+    },
+  });
+});
 
-// Register the /start command handler
-bot.command("start", async (ctx) => {
-  // Send image first
-  await sendImageCommand(ctx);
-  await handleStartCommand(ctx);
+// View plans
+bot.action("view_plans", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `💼 *Proxy Plans Available*:
+
+🔹 *Basic Plan* — \$5/month  
+   5 proxies · 1 country
+
+🔹 *Pro Plan* — \$10/month  
+   15 proxies · Multi-region
+
+🔹 *Elite Plan* — \$20/month  
+   50 proxies · Global rotation
+
+All plans come with setup guides and 24/7 support.
+`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// How it works
+bot.action("how_it_works", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `🔧 *How It Works*:
+
+1. Choose a plan
+2. Get your SOCKS5 proxy credentials
+3. Configure them in your apps, browser, or device
+4. Browse securely and without restrictions
+
+Setup instructions are sent immediately after signup.`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// Get Free Proxies (Dummy Sample)
+bot.action("get_free", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `🎁 *Your Free SOCKS5 Proxy:*
+
+\`\`\`
+Host: 149.56.23.129
+Port: 1080
+Username: free_trial
+Password: tryitnow
+\`\`\`
+
+⚠️ Free proxies are limited and may be slower.
+
+Upgrade for higher speed, privacy, and region control — tap *View Plans* to explore options.`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+// Contact support
+bot.action("contact_support", async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply(
+    `📞 *Need Help?*
+
+You can contact our support team directly at:  
+👉 @TrevorDev`
+  );
 });
 
 // Webhook handler
