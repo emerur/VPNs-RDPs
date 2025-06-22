@@ -1,5 +1,4 @@
-# This is the token you get from the bot father on Telegram
-BOT_TOKEN=
+
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
 
