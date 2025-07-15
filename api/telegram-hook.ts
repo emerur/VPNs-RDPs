@@ -1,124 +1,96 @@
-
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import {  NextResponse } from "next/server"
 import { Telegraf } from "telegraf";
 
-// Env variables
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const SECRET_HASH = "32e58fbahey833349df3383dee9132e180";
-//ds
+// Environment variables
+const BOT_TOKEN = process.env.BOT_TOKEN; // Replace with your bot token
 
+// Initialize the bot
 const bot = new Telegraf(BOT_TOKEN);
 
-// /start handler
-bot.start(async (ctx) => {
+// Handle the /start command
+export async function handleStartCommand(ctx) {
+  const COMMAND = "/start";
+  const { message } = ctx;
+  
+  // Welcome message with Markdown formatting
   const reply = `
-👋 *Welcome to Turbo Socks Bot!*
+  Unlock 100% Free VPN Access — No Limits, No Trials
 
-Protect your browsing and stay private with premium SOCKS5 proxies.
+Enjoy fast, secure, and private VPN connections with zero cost.
+No sign-ups. No restrictions.
 
-Please choose an option below to get started:
-`;
+Instantly connect to global servers
 
-  await ctx.reply(reply, {
-    parse_mode: "Markdown",
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: "📖 How It Works", callback_data: "how_it_works" }],
-        [{ text: "🛒 View Proxy Plans", callback_data: "view_plans" }],
-        [{ text: "🎁 Get Free Proxies", callback_data: "get_free" }],
-        [{ text: "📞 Contact Support", callback_data: "contact_support" }],
-      ],
-    },
+Stay protected on public Wi-Fi and keep your data safe
+
+High-speed performance for smooth browsing
+
+Works on all devices — anytime, anywhere
+
+Ready to browse without borders? Get today's list below
+ `;
+
+  try {
+    await ctx.reply(reply, {
+  parse_mode: "Markdown",
+  reply_markup: {
+    inline_keyboard: [
+         [{ text: "Get Today's Socks5", callback_data: "socks_5" }],
+        [{ text: "Get Today's Socks4", callback_data: "socks_4" }]
+    ],
+  },
+});
+    console.log(`Reply to ${COMMAND} command sent successfully.`);
+  } catch (error) {
+    console.error(`Something went wrong with the ${COMMAND} command:`, error);
+  }
+}
+
+// Socks 5
+bot.action("socks_5", async (ctx) => {
+  await ctx.answerCbQuery();
+   await ctx.replyWithDocument({
+    url: "https://github.com/emerur/telebot/blob/main/socks5.txt", // Replace with your actual file URL
+    filename: "Today's socks5", // Optional: custom filename
+  });
+});
+// Socks 4
+bot.action("socks_4", async (ctx) => {
+  await ctx.answerCbQuery();
+   await ctx.replyWithDocument({
+    url: "https://github.com/emerur/telebot/blob/main/socks4.txt", // Replace with your actual file URL
+    filename: "Today's socks4", // Optional: custom filename
   });
 });
 
-// View plans
-bot.action("view_plans", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.reply(
-    `💼 *Proxy Plans Available*:
-
-🔹 *Basic Plan* — \$5/month  
-   5 proxies · 1 country
-
-🔹 *Pro Plan* — \$10/month  
-   15 proxies · Multi-region
-
-🔹 *Elite Plan* — \$20/month  
-   50 proxies · Global rotation
-
-All plans come with setup guides and 24/7 support.
-`,
-    { parse_mode: "Markdown" }
-  );
+// Register the /start command handler
+bot.command("start", async (ctx) => {
+  await handleStartCommand(ctx);
 });
 
-// How it works
-bot.action("how_it_works", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.reply(
-    `🔧 *How It Works*:
-
-1. Choose a plan
-2. Get your SOCKS5 proxy credentials
-3. Configure them in your apps, browser, or device
-4. Browse securely and without restrictions
-
-Setup instructions are sent immediately after signup.`,
-    { parse_mode: "Markdown" }
-  );
-});
-
-// Get Free Proxies (Dummy Sample)
-bot.action("get_free", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.reply(
-    `🎁 *Your Free SOCKS5 Proxy:*
-
-\`\`\`
-Host: 149.56.23.129
-Port: 1080
-Username: free_trial
-Password: tryitnow
-\`\`\`
-
-⚠️ Free proxies are limited and may be slower.
-
-Upgrade for higher speed, privacy, and region control — tap *View Plans* to explore options.`,
-    { parse_mode: "Markdown" }
-  );
-});
-
-// Contact support
-bot.action("contact_support", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.reply(
-    `📞 *Need Help?*
-
-You can contact our support team directly at:  
-👉 @TrevorDev`
-  );
-});
-
-// Webhook handler
+// API route handler
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
     const { body, query } = req;
 
-    // Webhook setup
+    // Set webhook if requested
     if (query.setWebhook === "true") {
-      const webhookUrl = `${process.env.VERCEL_URL}/api/telegram-hook?secret_hash=${SECRET_HASH}`;
-      const isSet = await bot.telegram.setWebhook(webhookUrl);
-      console.log(`Webhook set to ${webhookUrl}: ${isSet}`);
+     const webhookUrl = `${process.env.WEBHOOK_URL}`
+    await bot.telegram.setWebhook(webhookUrl)
+
+    return res.status(200).send("OK");
     }
 
-    // Process updates
-    if (query.secret_hash === SECRET_HASH) {
+    // Handle incoming updates from Telegram  
       await bot.handleUpdate(body);
-    }
+  
+    return res.status(200).send("OK");
+    })
   } catch (error) {
-    console.error("Telegram Bot Error:", error.toString());
+    return res.json({ error: "Internal server error" }, { status: 500 })
   }
 
-  res.status(200).send("OK");
+  // Acknowledge the request with Telegram
+  // res.status(200).send("OK");
 };
