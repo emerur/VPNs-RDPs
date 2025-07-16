@@ -8,66 +8,92 @@ const BOT_TOKEN = process.env.BOT_TOKEN; // Replace with your bot token
 // Initialize the bot
 const bot = new Telegraf(BOT_TOKEN);
 
-// Handle the /start command
+// /start handler
 export async function handleStartCommand(ctx) {
   const COMMAND = "/start";
-  const { message } = ctx;
-  
+  const channelUrl = "t.me/nitrovpns0";
+  const targetUrl = "t.me/+KQx30rCFOeQ5Mzlk";
+
   // Welcome message with Markdown formatting
   const reply = `
-  Unlock 100% Free VPN Access — No Limits, No Trials
+Discover FREE Money-Making Methods! 💸🚀🤑🤑
 
-Enjoy fast, secure, and private VPN connections with zero cost.
-No sign-ups. No restrictions.
+Tired of scams? Get REAL cash with these 100% FREE methods! 💸
+No experience required - step-by-step blueprints to guide you! 💰💰 
 
-Instantly connect to global servers
+What’s Inside?
+🏦 Bank Logs & CC Methods 
+🏦 Free Cashout Walkthroughs
+🏦 2025 Cashapp Methods 🔥
+ 
+All completely FREE - no hidden costs or signups!
 
-Stay protected on public Wi-Fi and keep your data safe
-
-High-speed performance for smooth browsing
-
-Works on all devices — anytime, anywhere
-
-Ready to browse without borders? Get today's list below
- `;
+👇 Seize this life-changing opportunity NOW! 👇 🔗 [Join Here](${targetUrl})
+`;
 
   try {
     await ctx.reply(reply, {
-  parse_mode: "Markdown",
-  reply_markup: {
-    inline_keyboard: [
-         [{ text: "Get Today's Socks5", callback_data: "socks_5" }],
-        [{ text: "Get Today's Socks4", callback_data: "socks_4" }]
-    ],
-  },
-});
+      parse_mode: "Markdown",
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "🌐 Free VPNs/Proxies (Socks5 & Socks4)",
+              url: channelUrl,
+            },
+          ],
+          [{ text: "🎓 Make $500 - $7,000 Free", url: targetUrl }],
+        ],
+      },
+    });
     console.log(`Reply to ${COMMAND} command sent successfully.`);
   } catch (error) {
     console.error(`Something went wrong with the ${COMMAND} command:`, error);
   }
 }
-
-// Socks 5
-bot.action("socks_5", async (ctx) => {
-  await ctx.answerCbQuery();
-   await ctx.replyWithDocument({
-    url: "https://github.com/emerur/telebot/blob/main/socks5.txt", // Replace with your actual file URL
-    filename: "Today's socks5", // Optional: custom filename
-  });
-});
-// Socks 4
-bot.action("socks_4", async (ctx) => {
-  await ctx.answerCbQuery();
-   await ctx.replyWithDocument({
-    url: "https://github.com/emerur/telebot/blob/main/socks4.txt", // Replace with your actual file URL
-    filename: "Today's socks4", // Optional: custom filename
-  });
-});
+export async function sendImageCommand(ctx) {
+  const media = [
+    {
+      type: "photo",
+      media:
+        "https://github.com/emerur/limitless/blob/main/photo_6028285951022843801_y.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://github.com/emerur/limitless/blob/main/photo_6030537750836529162_y.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://github.com/emerur/limitless/blob/main/photo_6032721892030400596_y.jpeg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://github.com/emerur/limitless/blob/main/photo_6034973691844085628_y.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://github.com/emerur/limitless/blob/main/photo_6034973691844085630_y.jpg",
+    },
+  ];
+  // Send image first
+  await ctx.replyWithMediaGroup(
+    media,
+    { caption: "🔥Cashout Vouches🔥" },
+    { parse_mode: "Markdown" }
+  );
+}
 
 // Register the /start command handler
 bot.command("start", async (ctx) => {
+  // Send image first
+  await sendImageCommand(ctx);
   await handleStartCommand(ctx);
 });
+
 
 // API route handler
 export default async (req: VercelRequest, res: VercelResponse) => {
