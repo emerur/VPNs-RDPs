@@ -52,33 +52,33 @@ All completely FREE - no hidden costs or signups!
   }
 }
 export async function sendImageCommand(ctx) {
-  const media = [
+ const media = [
     {
       type: "photo",
       media:
-        "https://github.com/emerur/limitless/blob/main/photo_6028285951022843801_y.jpg",
+        "https://raw.githubusercontent.com/emerur/limitless/main/photo_6028285951022843801_y.jpg",
     },
     {
       type: "photo",
       media:
-        "https://github.com/emerur/limitless/blob/main/photo_6030537750836529162_y.jpg",
+        "https://raw.githubusercontent.com/emerur/limitless/main/photo_6030537750836529162_y.jpg",
     },
     {
       type: "photo",
       media:
-        "https://github.com/emerur/limitless/blob/main/photo_6032721892030400596_y.jpeg",
+        "https://raw.githubusercontent.com/emerur/limitless/main/photo_6032721892030400596_y.jpeg",
     },
     {
       type: "photo",
       media:
-        "https://github.com/emerur/limitless/blob/main/photo_6034973691844085628_y.jpg",
+        "https://raw.githubusercontent.com/emerur/limitless/main/photo_6034973691844085628_y.jpg",
     },
     {
       type: "photo",
       media:
-        "https://github.com/emerur/limitless/blob/main/photo_6034973691844085630_y.jpg",
+        "https://raw.githubusercontent.com/emerur/limitless/main/photo_6034973691844085630_y.jpg",
     },
-  ];
+  ]
   // Send image first
   await ctx.replyWithMediaGroup(
     media
