@@ -81,9 +81,7 @@ export async function sendImageCommand(ctx) {
   ];
   // Send image first
   await ctx.replyWithMediaGroup(
-    media,
-    { caption: "🔥Cashout Vouches🔥" },
-    { parse_mode: "Markdown" }
+    media
   );
 }
 
