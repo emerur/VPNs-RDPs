@@ -7,6 +7,11 @@ const BOT_TOKEN = process.env.BOT_TOKEN; // Replace with your bot token
 
 // Initialize the bot
 const bot = new Telegraf(BOT_TOKEN);
+// /start handler
+export async function handleStartCommand(ctx) {
+  const COMMAND = "/start";
+  const channelUrl = "t.me/metrovpnss";
+  const targetUrl = "t.me/+mu8JZaGlWG80YWFk";
 
 // Welcome message with Markdown formatting
   const reply = `
