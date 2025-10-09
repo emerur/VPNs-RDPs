@@ -13,10 +13,7 @@ export async function handleStartCommand(ctx) {
 
   // Welcome message with Markdown formatting
   const reply = `
-Unlock 100% Free VPN Access — No Limits, No Trials
-
-Enjoy fast, secure, and private VPN connections with zero cost.
-No sign-ups. No restrictions.
+Nitro VPNs - Fast & Secure Global Access — No Trials, No Fees, No Limits. Browse Freely
 
 Instantly connect to global servers
 
