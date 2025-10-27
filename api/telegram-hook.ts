@@ -16,7 +16,9 @@ export async function handleStartCommand(ctx) {
 // Welcome message with Markdown formatting
   const reply = `
 [Checkmate is just the opening move. Ready to play bigger game? Join the premium channel for strategic insights/methods on success and style.
+
 Start earning today with our clear, step-by-step instructions.
+
 Seize this opportunity to boost your income and take control of your financial future.](${targetUrl})
 `;
 
