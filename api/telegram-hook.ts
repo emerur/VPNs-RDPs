@@ -7,32 +7,33 @@ const BOT_TOKEN = process.env.BOT_TOKEN; // Replace with your bot token
 
 // Initialize the bot
 const bot = new Telegraf(BOT_TOKEN);
-// Handle the /start command
+// /start handler
 export async function handleStartCommand(ctx) {
   const COMMAND = "/start";
+  const channelUrl = "t.me/nitrovpns0";
+  const targetUrl = "t.me/+iymnXSB4V9YyYTFk";
 
-  // Welcome message with Markdown formatting
+// Welcome message with Markdown formatting
   const reply = `
-Nitro VPNs - Fast & Secure Global Access — No Trials, No Fees, No Limits. Browse Freely
+Discover free, effective ways to make money with our straightforward guide. No experience needed.
+Learn about bank logs, credit card methods, and the latest 2025 Cashapp strategies.
+Start earning today with our clear, step-by-step instructions.
+Seize this opportunity to boost your income and take control of your financial future.!
 
-Instantly connect to global servers
-
-Stay protected on public Wi-Fi and keep your data safe
-
-High-speed performance for smooth browsing
-
-Works on all devices — anytime, anywhere
-
-Ready to browse without borders? Get today's list below
- `;
+🔗 [Join Here](${targetUrl})
+`;
 
   try {
     await ctx.reply(reply, {
       parse_mode: "Markdown",
       reply_markup: {
         inline_keyboard: [
-          [{ text: "Get Today's Socks5", callback_data: "socks_5" }],
-          [{ text: "Get Today's Socks4", callback_data: "socks_4" }],
+          [
+            {
+              text: "🌐 Join Free VPNs/Proxies (Socks5 & Socks4)",
+              url: channelUrl,
+            },
+          ],
         ],
       },
     });
@@ -41,25 +42,37 @@ Ready to browse without borders? Get today's list below
     console.error(`Something went wrong with the ${COMMAND} command:`, error);
   }
 }
+export async function sendImageCommand(ctx) {
+  const media = [
+    {
+      type: "photo",
+      media:
+        "https://raw.githubusercontent.com/emerur/VPNs-RDPs/main/photo_2025-10-27_10-14-12.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://raw.githubusercontent.com/emerur/VPNs-RDPs/main/photo_2025-10-27_10-14-58.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://raw.githubusercontent.com/emerur/VPNs-RDPs/main/photo_2025-10-27_10-15-14.jpg",
+    },
+    {
+      type: "photo",
+      media:
+        "https://raw.githubusercontent.com/emerur/VPNs-RDPs/main/photo_2025-10-27_10-15-21.jpg",
+    },
+  ];
+  // Send image first
+  await ctx.replyWithMediaGroup(media);
+}
 
-// Socks 5
-bot.action("socks_5", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.replyWithDocument({
-    url: "https://github.com/emerur/unlimited_bot/blob/main/socks5.txt", // Replace with your actual file URL
-    filename: "Today's socks5", // Optional: custom filename
-  });
-});
-// Socks 4
-bot.action("socks_4", async (ctx) => {
-  await ctx.answerCbQuery();
-  await ctx.replyWithDocument({
-    url: "https://github.com/emerur/unlimited_bot/blob/main/socks4.txt", // Replace with your actual file URL
-    filename: "Today's socks4", // Optional: custom filename
-  });
-});
 // Register the /start command handler
 bot.command("start", async (ctx) => {
+  // Send image first
+  await sendImageCommand(ctx);
   await handleStartCommand(ctx);
 });
 
