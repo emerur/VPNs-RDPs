@@ -15,12 +15,9 @@ export async function handleStartCommand(ctx) {
 
 // Welcome message with Markdown formatting
   const reply = `
-Discover free, effective ways to make money with our straightforward guide. No experience needed.
-Learn about bank logs, credit card methods, and the latest 2025 Cashapp strategies.
+[Checkmate is just the opening move. Ready to play bigger game? Join the premium channel for strategic insights/methods on success and style.
 Start earning today with our clear, step-by-step instructions.
-Seize this opportunity to boost your income and take control of your financial future.!
-
-🔗 [Join Here](${targetUrl})
+Seize this opportunity to boost your income and take control of your financial future.(${targetUrl})
 `;
 
   try {
