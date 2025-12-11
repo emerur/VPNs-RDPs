@@ -10,8 +10,8 @@ const bot = new Telegraf(BOT_TOKEN);
 // /start handler
 export async function handleStartCommand(ctx) {
   const COMMAND = "/start";
-  const channelUrl = "t.me/nitrovpns0";
-  const targetUrl = "t.me/+iymnXSB4V9YyYTFk";
+  const channelUrl = "t.me/securegateways";
+  const targetUrl = "t.me/+PCf7HDLkTo4yODZk";
 
 // Welcome message with Markdown formatting
   const reply = `
